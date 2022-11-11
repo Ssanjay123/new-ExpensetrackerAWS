@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var name1 = "Dattatray"
+        var name2 = "Shobha"
+        // var age = 25
+    function say(){
+        var age = 30;
+        // console.log(this)
+        return this.age;
+    }
+
+    const tell= ()=>{
+        var age = 30;
+        // console.log("1234")
+        return this.age;
+        
+    }
+const person = {
+    name:"Balaji",
+    age:25,
+    say,
+    tell
+}
+
+console.log(say());
+console.log(tell());
+
+    </script>
+</body>
+</html>

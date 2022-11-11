@@ -3,7 +3,7 @@ const Expense = require("../models/expense");
 exports.addexpense = async(req,res,next)=>{
     try{
     const {expense,description,category} = req.body;
-   const result =  await Expense.create({expense,description,category})
+   const result =  await req.user.createExpense({expense,description,category})
   res.status(201).json({newExpense:result,message:'successful'})
     }
     catch(err){
@@ -13,7 +13,7 @@ exports.addexpense = async(req,res,next)=>{
 
 exports.getexpense = async(req,res,next)=>{
     try{
-        const result = await Expense.findAll()
+        const result = await req.user.getExpenses();
         res.status(200).json({allExpenses:result,message:'successful'})
     }
     catch(err){
@@ -25,7 +25,8 @@ exports.deleteexpense = async(req,res)=>{
  try{
     const id = req.params.id
     console.log(id);
-    await Expense.destroy({where:{id:id}})
+    const expense = await Expense.destroy({where:{id:id,userId:req.user.id}})
+    console.log(expense)
     res.status(200).json({message:'successfully deleted'})
  }
  catch(err){

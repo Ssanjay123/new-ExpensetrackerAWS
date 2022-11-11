@@ -1,6 +1,6 @@
 const User = require("../models/user");
-const Expense = require("../models/expense");
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 function issignupdetailsvalid(string){
     if(string==undefined || string.length===0){
@@ -30,18 +30,20 @@ exports.signup = async(req,res)=>{
   }
 }
 
+function generateAccessToken(id){
+    return jwt.sign({userId:id},"Balaji")
+}
 
-
+ 
     exports.login = async(req,res)=>{
     try{
         const{email,password}=req.body;
-        console.log('1');
       const user = await User.findAll({where:{email:email}})
      console.log(user);
         if(user.length>0){
             bcrypt.compare(password,user[0].password,(err,result)=>{
             if(!err){
-                res.status(200).json({success:true,message:"User successfully logged in"})
+                res.status(200).json({success:true,message:"User successfully logged in",token:generateAccessToken(user[0].id)})
             }
             else{
              return res.status(400).json({success:false,message:'password is incorrect'})
