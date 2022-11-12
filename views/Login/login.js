@@ -15,3 +15,7 @@ catch(err){
     document.body.innerHTML += `<div style=color:red>${err}</div>`;
 }
 }
+
+function forgotPassword(){
+  window.location.href = "../forgotPassword/forgotPassword.html"
+}
