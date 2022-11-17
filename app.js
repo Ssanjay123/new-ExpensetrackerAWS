@@ -6,6 +6,7 @@ const app = express();
 const Expense = require("./models/expense");
 const User = require("./models/user");
 const Order = require("./models/orders")
+const premiumMembership = require("./models/premiummembership")
 const Forgotpassword = require("./models/forgotPassword");
 const userRoutes = require("./routes/user");
 const expenseRoutes = require("./routes/expense");
@@ -32,6 +33,8 @@ Order.belongsTo(User)
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
+User.hasMany(premiumMembership);
+premiumMembership.belongsTo(User);
 
 
 

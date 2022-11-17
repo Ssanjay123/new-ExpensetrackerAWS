@@ -39,7 +39,7 @@ function generateAccessToken(id){
     try{
         const{email,password}=req.body;
       const user = await User.findAll({where:{email:email}})
-     console.log(user);
+    //  console.log("user is"+user.datavalues.ispremiumuser);
         if(user.length>0){
             bcrypt.compare(password,user[0].password,(err,result)=>{
             if(!err){

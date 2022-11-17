@@ -13,12 +13,15 @@ async function addExpense(e){
 
     window.addEventListener("DOMContentLoaded",async()=>{
         try{
+           let NumberOfexpenses = document.getElementById("showExpense").value
+           console.log(NumberOfexpenses);
+            let page = 1;
           const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:3000/expense/get-expense",{headers:{"authorization":token}})
+      const res = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}&numOfExp=${NumberOfexpenses}`,{headers:{"authorization":token}})
       console.log(res);
-      for(let i=0;i<res.data.allExpenses.length;i++){
-        showExpenseOnScreen(res.data.allExpenses[i]);
-      }
+        showExpenseOnScreen(res.data.allExpenses);
+        showPagination(res.data)
+    
     }
     catch(err){
         console.log(err);
@@ -27,15 +30,17 @@ async function addExpense(e){
 
     async function showExpenseOnScreen(expense){
         try{
-        document.getElementById('expense').value = '';
-        document.getElementById('description').value = '';
-        document.getElementById('category').value = '';
-
+            document.getElementById("expense").value = ''
+            document.getElementById("description").value = ''
+            document.getElementById("category").value = ''
+       
         const parentNode = document.getElementById('listOfExpense')
-       const childHTML = `<li id="${expense.id}">${expense.expense} - ${expense.description} - ${expense.category}
-                           <button onclick=deleteExpense("${expense.id}")>Delete</button>
-                           <button onclick=editExpense("${expense.id}")>Edit</button></li>`
-                           parentNode.innerHTML = parentNode.innerHTML + childHTML;
+        parentNode.innerHTML = ''
+        expense.forEach(expense=>{
+       parentNode.innerHTML += `<li id="${expense.id}">${expense.expense} - ${expense.description} - ${expense.category}
+                           <button onclick=deleteExpense("${expense.id}")>Delete</button></li>`
+                        
+                        })
         }
         catch(err){
             console.log(err);
@@ -63,7 +68,7 @@ async function removeExpenseFromScreen(expenseId){
 
 document.getElementById('rzp-button1').onclick = async function (e) {
     const token = localStorage.getItem("token")
-    const response  = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: {"Authorization" : token} });
+    const response  = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: {"authorization" : token} });
     console.log(response);
     var options =
     {
@@ -84,13 +89,14 @@ document.getElementById('rzp-button1').onclick = async function (e) {
          axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
              order_id: options.order_id,
              payment_id: response.razorpay_payment_id,
-         }, { headers: {"Authorization" : token} }).then(() => {
+         }, { headers: {"authorization" : token} }).then(() => {
              alert('You are a Premium User Now')
          }).catch(() => {
              alert('Something went wrong. Try Again!!!')
          })
      },
   };
+
   const rzp1 = new Razorpay(options);
   rzp1.open();
   e.preventDefault();
@@ -98,10 +104,63 @@ document.getElementById('rzp-button1').onclick = async function (e) {
   rzp1.on('payment.failed', function (response){
   alert(response.error.code);
   alert(response.error.description);
-  alert(response.error.source);
-  alert(response.error.step);
-  alert(response.error.reason);
-  alert(response.error.metadata.order_id);
-  alert(response.error.metadata.payment_id);
+//   alert(response.error.source);
+//   alert(response.error.step);
+//   alert(response.error.reason);
+//   alert(response.error.metadata.order_id);
+//   alert(response.error.metadata.payment_id);
  });
 }
+
+function showPagination({
+    currentpage,
+    hasNextPage,
+     nextPage,
+     hasPreviousPage,
+    previousPage,
+    lastPage}){
+        let pagination = document.getElementById('pagination')
+        pagination.innerHTML='';
+    
+             const btn1 = document.createElement('button');
+                btn1.innerHTML =`<h3>${currentpage}</h3>`
+                btn1.addEventListener('click',()=>getExpenses(currentpage))
+               pagination.appendChild(btn1);
+    
+    
+            if(hasPreviousPage){
+                const btn2 = document.createElement('button');
+                btn2.innerHTML = previousPage;
+                btn2.addEventListener('click',()=>getExpenses(previousPage))
+               pagination.appendChild(btn2);
+            }
+            
+                if(hasNextPage){
+                const btn3 = document.createElement('button');
+                btn3.innerHTML =  nextPage;
+                btn3.addEventListener('click',()=>getExpenses(nextPage))
+               pagination.appendChild(btn3);
+            }
+    }
+
+    function getExpenses(page){
+        const token = localStorage.getItem('token');
+        axios.get(`http://localhost:3000/expense/get-expense?page=${page}`,{headers:{"authorization":token}})
+        .then(res=>{
+            showExpenseOnScreen(res.data.allExpenses);
+            
+            showPagination(res.data);
+        })
+    }
+
+    const leaderBoard=document.getElementById('leader');
+leaderBoard.addEventListener('click',()=>{
+  if (confirm('Are you sure')) {
+    window.location='../leaderboard.html';
+  }
+})
+
+
+// function showDynamicExpenses(){
+    
+// }

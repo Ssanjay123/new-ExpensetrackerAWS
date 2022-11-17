@@ -14,7 +14,8 @@ const purchasepremium =async (req, res) => {
             if(err) {
                 throw new Error(err);
             }
-            req.user.createOrder({ orderid: order.id, status: 'PENDING'}).then(() => {
+            console.log("order.id",order.id)
+            req.user.createOrder({ orderId: order.id, status: 'PENDING'}).then(() => {
                 return res.status(201).json({ order, key_id : rzp.key_id});
 
             }).catch(err => {
@@ -29,9 +30,9 @@ const purchasepremium =async (req, res) => {
 
  const updateTransactionStatus = (req, res ) => {
     try {
-        const { payment_id, order_id} = req.body;
+        const {payment_id, order_id} = req.body;
         Order.findOne({where : {orderid : order_id}}).then(order => {
-            order.update({ paymentid: payment_id, status: 'SUCCESSFUL'}).then(() => {
+            order.update({ paymentId: payment_id, status: 'SUCCESSFUL'}).then(() => {
                 req.user.update({ispremiumuser: true})
                 return res.status(202).json({sucess: true, message: "Transaction Successful"});
             }).catch((err)=> {
