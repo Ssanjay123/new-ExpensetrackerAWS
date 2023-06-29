@@ -11,5 +11,8 @@
     "razorpay": "^2.8.3",
     "sequelize": "^6.25.4",
     "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "start":"node app.js"
   }
 }
