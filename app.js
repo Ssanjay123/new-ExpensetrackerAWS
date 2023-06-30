@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser")
+const dotenv = require("dotenv")
+dotenv.config();
 const sequelize = require("./util/database");
 const cors = require("cors");
 const app = express();
@@ -12,12 +14,10 @@ const userRoutes = require("./routes/user");
 const expenseRoutes = require("./routes/expense");
 const purchaseRoutes = require("./routes/purchase");
 const resetPasswordRoutes = require('./routes/resetpassword')
-const dotenv = require("dotenv")
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(cors());
-dotenv.config();
 
 app.use("/user",userRoutes);
 app.use("/expense",expenseRoutes);
@@ -42,6 +42,6 @@ sequelize
 // .sync({force:true})
 .sync()
 .then(()=>{
-    app.listen(3000)
+    app.listen(process.env.PORT)
 })
 .catch(err=>console.log(err))
