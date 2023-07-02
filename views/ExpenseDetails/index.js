@@ -6,7 +6,7 @@ async function addExpense(e){
     category : e.target.category.value
   }
   const token = localStorage.getItem("token");
-  const response = await axios.post("http://localhost:3000/expense/add-expense",expenseDetails,{headers:{"authorization":token}})
+  const response = await axios.post("http://16.16.199.5:3000/expense/add-expense",expenseDetails,{headers:{"authorization":token}})
   console.log(response);
   showExpenseOnScreen(response.data.newExpense)
 }
@@ -17,7 +17,7 @@ async function addExpense(e){
            console.log(NumberOfexpenses);
             let page = 1;
           const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}&numOfExp=${NumberOfexpenses}`,{headers:{"authorization":token}})
+      const res = await axios.get(`http://16.16.199.5:3000/expense/get-expense?page=${page}&numOfExp=${NumberOfexpenses}`,{headers:{"authorization":token}})
       console.log(res);
         showExpenseOnScreen(res.data.allExpenses);
         showPagination(res.data)
@@ -50,7 +50,7 @@ async function addExpense(e){
     async function deleteExpense(expenseId){
         try{
             const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:3000/expense/delete-expense/${expenseId}`,{headers:{"authorization":token}})
+        await axios.delete(`http://16.16.199.5:3000/expense/delete-expense/${expenseId}`,{headers:{"authorization":token}})
         removeExpenseFromScreen(expenseId);
     }
     catch(err){
@@ -68,7 +68,7 @@ async function removeExpenseFromScreen(expenseId){
 
 document.getElementById('rzp-button1').onclick = async function (e) {
     const token = localStorage.getItem("token")
-    const response  = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: {"authorization" : token} });
+    const response  = await axios.get('http://16.16.199.5:3000/purchase/premiummembership', { headers: {"authorization" : token} });
     console.log(response);
     var options =
     {
@@ -86,7 +86,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
      // This handler function will handle the success payment
      "handler": function (response) {
          console.log(response);
-         axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
+         axios.post('http://16.16.199.5:3000/purchase/updatetransactionstatus',{
              order_id: options.order_id,
              payment_id: response.razorpay_payment_id,
          }, { headers: {"authorization" : token} }).then(() => {
@@ -145,7 +145,7 @@ function showPagination({
 
     function getExpenses(page){
         const token = localStorage.getItem('token');
-        axios.get(`http://localhost:3000/expense/get-expense?page=${page}`,{headers:{"authorization":token}})
+        axios.get(`http://16.16.199.5:3000/expense/get-expense?page=${page}`,{headers:{"authorization":token}})
         .then(res=>{
             showExpenseOnScreen(res.data.allExpenses);
             

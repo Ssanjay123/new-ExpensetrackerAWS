@@ -5,7 +5,7 @@ async function login(e){
     email:e.target.email.value,
     password:e.target.password.value
     } 
-  const response = await axios.post("http://localhost:3000/user/login",loginDetails)
+  const response = await axios.post("http://16.16.199.5:3000/user/login",loginDetails)
   alert(response.data.message)
   localStorage.setItem("token",response.data.token);
   window.location.href="../ExpenseDetails/index.html"
