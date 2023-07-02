@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser")
 const dotenv = require("dotenv")
+const path = require("path");
 dotenv.config();
 const sequelize = require("./util/database");
 const cors = require("cors");
@@ -23,6 +24,10 @@ app.use("/user",userRoutes);
 app.use("/expense",expenseRoutes);
 app.use("/purchase",purchaseRoutes)
 app.use("/password",resetPasswordRoutes)
+
+app.use((req,res)=>{
+ res.sendFile(path.join(__dirname,`views/${req.url}`));
+})
 
 User.hasMany(Expense)
 Expense.belongsTo(User);
