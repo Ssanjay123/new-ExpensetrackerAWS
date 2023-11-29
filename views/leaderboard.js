@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded',() =>{
     const token = localStorage.getItem('token')
-    axios.get("http://16.16.199.5:3000/expense/allUsers",{ headers: {"authorization" : token} })
+    axios.get("http://52.66.200.118:3000/expense/allUsers",{ headers: {"authorization" : token} })
     .then(result =>{
         console.log(result.data.data)
         const leaderboard = document.getElementById('lb');
@@ -19,7 +19,7 @@ window.addEventListener('DOMContentLoaded',() =>{
 function getExpenses(id)
 {
 
-    axios.get(`http://16.16.199.5:3000/expense/allExpense/${id}`)
+    axios.get(`http://52.66.200.118:3000/expense/allExpense/${id}`)
     .then(result=>{
         console.log(result)
         let details = document.getElementById('details')

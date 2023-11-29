@@ -7,7 +7,7 @@ async function signup(e){
             password:e.target.password.value,
         }
         console.log(signupDetails);
-        const response = await axios.post("http://16.16.199.5:3000/user/signup",signupDetails)
+        const response = await axios.post("http://52.66.200.118:3000/user/signup",signupDetails)
         if(response.status===201){
             console.log(response)
             alert(response.data.message);
